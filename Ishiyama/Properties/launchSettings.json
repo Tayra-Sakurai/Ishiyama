@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Ishiyama (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Ishiyama (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
