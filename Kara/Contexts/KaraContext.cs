@@ -16,5 +16,15 @@ namespace Kara.Contexts
 
         public KaraContext(DbContextOptions<KaraContext> options)
             : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Category>()
+                .HasIndex(e => e.Name)
+                .IsUnique();
+            modelBuilder.Entity<Item>();
+            modelBuilder.Entity<Log>();
+        }
     }
 }

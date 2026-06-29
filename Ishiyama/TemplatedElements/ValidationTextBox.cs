@@ -15,8 +15,8 @@ using System.Linq;
 
 namespace Ishiyama.TemplatedElements
 {
-    [TemplateVisualState(GroupName = "ValidationState", Name = "Invalid")]
-    [TemplateVisualState(GroupName = "ValidationState", Name = "Valid")]
+    [TemplateVisualState(GroupName = "ValidationStates", Name = "Invalid")]
+    [TemplateVisualState(GroupName = "ValidationStates", Name = "Valid")]
     public sealed partial class ValidationTextBox : Control
     {
         // Global variables

@@ -1,9 +1,10 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Ishiyama">
+    xmlns:local="using:Ishiyama"
+    xmlns:local2="using:Ishiyama.TemplatedElements">
 
-    <Style TargetType="local2:ValidationTextBox" xmlns:local2="using:Ishiyama.TemplatedElements">
+    <Style TargetType="local2:ValidationTextBox">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local2:ValidationTextBox">
@@ -16,7 +17,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="ValidationTextBoxTextBox.BorderBrush" Value="{ThemeResource SystemFillColorCriticalBrush}"/>
                                         <Setter Target="ValidationStatus.Glyph" Value="&#xEB90;"/>
-                                        <Setter Target="ValidationStatus.ForeGround" Value="{ThemeResource SystemFillColorCriticalBrush}"/>
+                                        <Setter Target="ValidationStatus.Foreground" Value="{ThemeResource SystemFillColorCriticalBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
 
@@ -24,7 +25,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="ValidationTextBoxTextBox.BorderBrush" Value="{ThemeResource SystemFillColorSuccessBrush}"/>
                                         <Setter Target="ValidationStatus.Glyph" Value="&#xEC61;"/>
-                                        <Setter Target="ValidationStatus.ForeGround" Value="{ThemeResource SystemFillColorSuccessBrush}"/>
+                                        <Setter Target="ValidationStatus.Foreground" Value="{ThemeResource SystemFillColorSuccessBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
