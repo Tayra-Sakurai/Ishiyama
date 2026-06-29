@@ -10,6 +10,25 @@
                     <Grid
                         RowSpacing="8"
                         ColumnSpacing="4">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ValidationStates">
+                                <VisualState x:Name="Invalid">
+                                    <VisualState.Setters>
+                                        <Setter Target="ValidationTextBoxTextBox.BorderBrush" Value="{ThemeResource SystemFillColorCriticalBrush}"/>
+                                        <Setter Target="ValidationStatus.Glyph" Value="&#xEB90;"/>
+                                        <Setter Target="ValidationStatus.ForeGround" Value="{ThemeResource SystemFillColorCriticalBrush}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Valid">
+                                    <VisualState.Setters>
+                                        <Setter Target="ValidationTextBoxTextBox.BorderBrush" Value="{ThemeResource SystemFillColorSuccessBrush}"/>
+                                        <Setter Target="ValidationStatus.Glyph" Value="&#xEC61;"/>
+                                        <Setter Target="ValidationStatus.ForeGround" Value="{ThemeResource SystemFillColorSuccessBrush}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -19,14 +38,18 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox
-                            Name="ValidationTextBoxTextBox"/>
-                        <TextBlock
-                            Grid.Column="1"
-                            Name="ValidationStatus"/>
+                            x:Name="ValidationTextBoxTextBox"
+                            Text="{TemplateBinding Text}"
+                            PlaceholderText="{TemplateBinding PlaceholderText}"
+                            Header="{TemplateBinding Header}"/>
+                        <FontIcon x:Name="ValidationStatus"/>
                         <TextBlock
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            Name="ValidationMessage"/>
+                            x:Name="ValidationMessage"
+                            Foreground="{ThemeResource SystemFillColorCritical}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{TemplateBinding ErrorMessage}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -1,4 +1,8 @@
-﻿using Microsoft.UI.Xaml;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Kara.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -43,8 +47,20 @@ namespace Ishiyama
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            Ioc.Default.ConfigureServices(GetService());
+
             _window = new MainWindow();
             _window.Activate();
+        }
+
+        private static IServiceProvider GetService()
+        {
+            ServiceCollection services = new();
+
+            services.AddDbContextFactory<KaraContext>(
+                options => options.UseSqlServer("Data Source=thinkpadx13\\SQLEXPRESS02;Initial Catalog=StockpileMan;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;Command Timeout=30"));
+
+            return services.BuildServiceProvider();
         }
     }
 }

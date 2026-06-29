@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -14,22 +15,35 @@ using System.Linq;
 
 namespace Ishiyama.TemplatedElements
 {
-    [TemplatePart(Name = "ValidationTextBoxTextBox", Type = typeof(TextBox))]
-    [TemplatePart(Name = "ValidationStatus", Type = typeof(TextBlock))]
-    [TemplatePart(Name = "ValidationMessage", Type = typeof(TextBlock))]
+    [TemplateVisualState(GroupName = "ValidationState", Name = "Invalid")]
+    [TemplateVisualState(GroupName = "ValidationState", Name = "Valid")]
     public sealed partial class ValidationTextBox : Control
     {
-        // Elements
-        private TextBox? textBox;
-        private TextBlock? validationStatus;
-        private TextBlock? validationMessage;
-
         // Global variables
         private INotifyDataErrorInfo? oldDataContext;
 
         public ValidationTextBox()
         {
             DefaultStyleKey = typeof(ValidationTextBox);
+
+            DataContextChanged += ValidationTextBox_DataContextChanged;
+        }
+
+        private void ValidationTextBox_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            if (oldDataContext != null)
+                oldDataContext.ErrorsChanged -= OldDataContext_ErrorsChanged;
+
+            if (DataContext is INotifyDataErrorInfo notifyDataErrorInfo)
+            {
+                oldDataContext = notifyDataErrorInfo;
+                oldDataContext.ErrorsChanged += OldDataContext_ErrorsChanged;
+            }
+        }
+
+        private void OldDataContext_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
+        {
+            Validate();
         }
 
         protected override void OnApplyTemplate()
@@ -77,7 +91,7 @@ namespace Ishiyama.TemplatedElements
         // Property changed callback
         private static void PropertyNamePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            ((ValidationTextBox)d).Validate();
         }
 
         public string PlaceholderText
@@ -92,7 +106,49 @@ namespace Ishiyama.TemplatedElements
             typeof(ValidationTextBox),
             new(default(string)));
 
-        // Methods
+        public string ErrorMessage
+        {
+            get => (string)GetValue(ErrorMessageProperty);
+            set => SetValue(ErrorMessageProperty, value);
+        }
 
+        private static readonly DependencyProperty ErrorMessageProperty = DependencyProperty.Register(
+            nameof(ErrorMessage),
+            typeof(string),
+            typeof(ValidationTextBox),
+            new(string.Empty));
+
+        // Methods
+        private void Validate()
+        {
+            if (
+                DataContext is not INotifyDataErrorInfo errInfo ||
+                PropertyName is not string propertyName)
+                return;
+
+            IEnumerable<ValidationResult> errors = errInfo.GetErrors(propertyName).OfType<ValidationResult>();
+
+            if (
+                errors.Count() == 0 ||
+                errors.All(e => string.IsNullOrEmpty(e.ErrorMessage)))
+            {
+                ErrorMessage = string.Empty;
+                UpdateValidationState(true);
+                return;
+            }
+
+            string? message = errors.First(e => !string.IsNullOrEmpty(e.ErrorMessage)).ErrorMessage;
+            if (string.IsNullOrEmpty(message))
+                message = string.Empty;
+
+            ErrorMessage = message;
+            UpdateValidationState(false);
+        }
+
+        private void UpdateValidationState(bool isValid, bool useTransitions = false)
+        {
+            string name = isValid ? "Valid" : "Invalid";
+            VisualStateManager.GoToState(this, name, useTransitions);
+        }
     }
 }
