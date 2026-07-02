@@ -1,5 +1,8 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Kara.Contexts;
+using Kara.Models;
+using Kara.Services;
+using Kara.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
@@ -59,6 +62,9 @@ namespace Ishiyama
 
             services.AddDbContextFactory<KaraContext>(
                 options => options.UseSqlServer("Data Source=thinkpadx13\\SQLEXPRESS02;Initial Catalog=StockpileMan;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;Command Timeout=30"));
+            services.AddSingleton<ILoggingService<Log>, LoggingService>();
+            services.AddTransient<ItemsViewModel>();
+            services.AddTransient<ItemViewModel>();
 
             return services.BuildServiceProvider();
         }

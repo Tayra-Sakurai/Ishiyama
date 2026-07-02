@@ -13,5 +13,6 @@ namespace Kara.Models
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
         public DateTimeOffset BoughtAt { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset Life { get; set; } = DateTimeOffset.Now;
     }
 }

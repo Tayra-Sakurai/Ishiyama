@@ -11,6 +11,7 @@ namespace Kara.Models
         public int Id { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
+        public bool IsUsed { get; set; } = true;
         public DateTimeOffset DateTimeOffset { get; set; } = DateTimeOffset.Now;
     }
 }
