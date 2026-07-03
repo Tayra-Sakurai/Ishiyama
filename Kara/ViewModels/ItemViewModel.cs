@@ -9,6 +9,7 @@ using Kara.Validations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,7 @@ namespace Kara.ViewModels
         {
             factory = dbContextFactory;
             this.service = service;
+            Categories = [];
             item = new();
         }
 
@@ -36,6 +38,13 @@ namespace Kara.ViewModels
             Item? newItem = await context.Items.FindAsync(entity.Id);
             if (newItem != null)
                 item = newItem;
+        }
+
+        [ObservableProperty]
+        public partial ObservableCollection<Category> Categories
+        {
+            get;
+            set;
         }
 
         [Required]
@@ -84,6 +93,23 @@ namespace Kara.ViewModels
 
             context.Update(item);
             await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Loads the categories in the select box.
+        /// </summary>
+        /// <returns>The asynchronous task.</returns>
+        [RelayCommand(AllowConcurrentExecutions = false)]
+        public async Task LoadCategoriesAsync()
+        {
+            using KaraContext context = await factory.CreateDbContextAsync();
+
+            Categories.Clear();
+
+            await foreach (
+                Category category in
+                context.Categories.AsAsyncEnumerable())
+                Categories.Add(category);
         }
 
         private bool CanSave()
