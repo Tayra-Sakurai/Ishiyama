@@ -19,8 +19,6 @@ jobs:
           dotnet-version: 10.x
       - uses: NuGet/setup-nuget@v4
       - uses: microsoft/setup-msbuild@v3
-      - name: Restore NuGet place
-        run: nuget restore Ishiyama/Ishiyama.csproj
       - run: msbuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -p:TargetFramework=net10.0-windows -r Ishiyama.slnx
       - run: msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:SelfContained=true /p:TargetFramework=net10.0-windows /p:GenerateAppxPackageOnBuild=true Ishiyama.slnx
       - name: Upload the artifacts
