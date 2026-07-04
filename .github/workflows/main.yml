@@ -18,8 +18,8 @@ jobs:
         with:
           dotnet-version: 10.x
       - uses: microsoft/setup-msbuild@v3
-      - run: msbuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -p:TargetFramework=net10.0-windows -r Ishiyama.slnx
-      - run: msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:SelfContained=true /p:TargetFramework=net10.0-windows /p:GenerateAppxPackageOnBuild=true Ishiyama.slnx
+      - run: msbuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -p:TargetFramework=net10.0-windows10.0.26100.0 -r Ishiyama.slnx
+      - run: msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:SelfContained=true /p:TargetFramework=net10.0-windows10.0.26100.0 /p:GenerateAppxPackageOnBuild=true Ishiyama.slnx
       - name: Upload the artifacts
         uses: actions/upload-artifact@v7
         with:
