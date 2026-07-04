@@ -10,18 +10,17 @@ jobs:
     strategy:
       matrix:
         platform: [x64, x86]
-        configuration: [Debug, Release]
+        configuration: [Release]
     steps:
       - uses: actions/checkout@v7.0.0
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.x
-      - uses: NuGet/setup-nuget@v4
       - uses: microsoft/setup-msbuild@v3
       - run: msbuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -p:TargetFramework=net10.0-windows -r Ishiyama.slnx
       - run: msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:SelfContained=true /p:TargetFramework=net10.0-windows /p:GenerateAppxPackageOnBuild=true Ishiyama.slnx
       - name: Upload the artifacts
         uses: actions/upload-artifact@v7
         with:
-          path: packages?/*
+          path: packages?/**/*.*
