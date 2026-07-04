@@ -18,4 +18,8 @@ jobs:
         with:
           dotnet-version: 10.x
       - uses: microsoft/setup-msbuild@v3
-      - run: msbuild -p:Configuration=${{ matrix.configuration }};Platform=${{ matrix.platform }} Ishiyama.slnx
+      - run: msbuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} Ishiyama.slnx
+      - name: Upload the artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          path: packages?/*
