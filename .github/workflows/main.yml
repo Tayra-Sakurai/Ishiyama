@@ -1,0 +1,21 @@
+name: Build App
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [x64]
+        configuration: [Release]
+    steps:
+      - uses: actions/checkout@7.0.0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@5
+        with:
+          dotnet-version: 10.x
+      - uses: microsoft/setup-msbuild@3
+      - run: msbuild Ishiyama.slnx 
