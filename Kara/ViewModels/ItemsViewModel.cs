@@ -56,8 +56,8 @@ namespace Kara.ViewModels
             AddCommand.NotifyCanExecuteChanged();
         }
 
-        [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanAdd))]
-        public async Task AddAsync()
+        [RelayCommand(CanExecute = nameof(CanAdd))]
+        private async void Add()
         {
             using KaraContext context = await dbContextFactory.CreateDbContextAsync();
 

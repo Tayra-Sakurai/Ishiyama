@@ -1,6 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Kara.Contexts;
+using Kara.Messages;
 using Kara.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,12 +14,11 @@ using System.Threading.Tasks;
 
 namespace Kara.ViewModels
 {
-    public partial class CategoriesViewModel : ObservableRecipient, IEntriesViewModel<Category>
+    public partial class CategoriesViewModel : ObservableObject, IEntriesViewModel<Category>
     {
         private readonly IDbContextFactory<KaraContext> factory;
 
         public CategoriesViewModel(IDbContextFactory<KaraContext> factory)
-            : base()
         {
             this.factory = factory;
             Entities = [];
@@ -56,6 +57,20 @@ namespace Kara.ViewModels
         private bool CanRemove(Category? category)
         {
             return category is Category;
+        }
+
+        [RelayCommand(CanExecute = nameof(CanRemove))]
+        public void Detail(Category? category)
+        {
+            ArgumentNullException.ThrowIfNull(category);
+
+            WeakReferenceMessenger.Default.Send(new CategoryDetailMessage(category));
+        }
+
+        [RelayCommand]
+        private static void Add()
+        {
+            WeakReferenceMessenger.Default.Send(new LargeCategoryAddingMessage(new()));
         }
     }
 }

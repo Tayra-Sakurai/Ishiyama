@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Kara.ViewModels
 {
@@ -16,28 +17,22 @@ namespace Kara.ViewModels
         where TEntity : class, new()
     {
         /// <summary>
-        /// Adds a new entry to the table.
-        /// </summary>
-        /// <returns>The task to manage the asynchronous process.</returns>
-        Task AddAsync();
-
-        /// <summary>
-        /// Gets an <see cref="IAsyncRelayCommand"/> to implement <see cref="AddAsync"/>.
+        /// Gets an <see cref="IRelayCommand"/> to add an entry.
         /// </summary>
         /// <value>The command to implement the funtion.</value>
-        IAsyncRelayCommand AddCommand { get; }
+        IRelayCommand AddCommand { get; }
 
         /// <summary>
         /// Removes the entry specified by <paramref name="entity"/>.
         /// </summary>
         /// <param name="entity">The entity to be removed</param>
         /// <returns>The task manager of the asynchronous process.</returns>
-        Task RemoveAsync(TEntity entity);
+        Task RemoveAsync(TEntity? entity);
 
         /// <summary>
         /// Gets the instance of <see cref="IAsyncRelayCommand{TEntity}"/> of <see cref="RemoveAsync(TEntity)"/>.
         /// </summary>
-        IAsyncRelayCommand<TEntity> RemoveCommand { get; }
+        IAsyncRelayCommand<TEntity?> RemoveCommand { get; }
 
         /// <summary>
         /// Asynchronously loads the data from the database.
@@ -54,11 +49,11 @@ namespace Kara.ViewModels
         /// Sends a message to jump to the page to show details.
         /// </summary>
         /// <param name="entity">The entity to show details.</param>
-        void Detail(TEntity entity);
+        void Detail(TEntity? entity);
 
         /// <summary>
         /// Gets the command to open the details.
         /// </summary>
-        IRelayCommand<TEntity> DetailCommand { get; }
+        IRelayCommand<TEntity?> DetailCommand { get; }
     }
 }
