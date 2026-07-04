@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using Kara.Contexts;
 using Kara.Messages;
 using Kara.Models;
-using Kara.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,13 +17,11 @@ namespace Kara.ViewModels
     public partial class ItemsViewModel : ObservableRecipient, IEntriesViewModel<Item>, IRecipient<CategoryAddedMessage>, IRecipient<CategoryRemovedMessage>
     {
         private readonly IDbContextFactory<KaraContext> dbContextFactory;
-        private readonly ILoggingService<Log> loggingService;
 
-        public ItemsViewModel(IDbContextFactory<KaraContext> dbContextFactory, ILoggingService<Log> loggingService)
+        public ItemsViewModel(IDbContextFactory<KaraContext> dbContextFactory)
             : base()
         {
             this.dbContextFactory = dbContextFactory;
-            this.loggingService = loggingService;
 
             Entities = [];
 
@@ -51,7 +48,8 @@ namespace Kara.ViewModels
                 Item item in
                 context
                 .Items
-                .Include(x => x.Category)
+                .Include(x => x.SmallCategory)
+                .ThenInclude(x => x!.LargeCategory)
                 .AsAsyncEnumerable())
                 Entities.Add(item);
 
@@ -63,10 +61,10 @@ namespace Kara.ViewModels
         {
             using KaraContext context = await dbContextFactory.CreateDbContextAsync();
 
-            Category defaultCategory = context.Categories.First();
+            Category defaultCategory = context.SmallCategories.First();
             Item newItem = new()
             {
-                CategoryId = defaultCategory.Id,
+                SmallCategoryId = defaultCategory.CategoryId,
             };
 
             context.Add(newItem);
@@ -91,39 +89,7 @@ namespace Kara.ViewModels
                     context.Remove(itm);
                     Messenger.Send(new ItemRemovedMessage(itm));
                 }
-
-                await loggingService.OutLogAsync(
-                    new()
-                    {
-                        CategoryId = itm.CategoryId,
-                        IsUsed = true,
-                    });
             }
-        }
-
-        /// <summary>
-        /// Deletes the record as a disposal.
-        /// </summary>
-        /// <param name="item">The item to be removed.</param>
-        /// <returns>The asynchronous task.</returns>
-        [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanRemove))]
-        public async Task RemoveAsDisposalAsync(Item? item)
-        {
-            if (item is not Item item1)
-                return;
-
-            using (KaraContext context = await dbContextFactory.CreateDbContextAsync())
-            {
-                context.Remove(item1);
-                await context.SaveChangesAsync();
-            }
-
-            await loggingService.OutLogAsync(
-                new()
-                {
-                    CategoryId = item1.CategoryId,
-                    IsUsed = false,
-                });
         }
 
         private bool CanRemove(Item? item)

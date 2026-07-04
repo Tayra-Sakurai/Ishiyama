@@ -4,6 +4,7 @@ using Kara.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kara.Migrations
 {
     [DbContext(typeof(KaraContext))]
-    partial class KaraContextModelSnapshot : ModelSnapshot
+    [Migration("20260704005803_InsertedNewTable1")]
+    partial class InsertedNewTable1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,6 +109,9 @@ namespace Kara.Migrations
 
                     b.Property<DateTimeOffset>("DateTimeOffset")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

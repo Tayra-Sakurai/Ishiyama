@@ -51,12 +51,6 @@ namespace Kara.ViewModels
         IAsyncRelayCommand LoadCommand { get; }
 
         /// <summary>
-        /// The entities to be listed.
-        /// </summary>
-        /// <value>The entities in the table.</value>
-        ObservableCollection<TEntity> Entities { get; set; }
-
-        /// <summary>
         /// Sends a message to jump to the page to show details.
         /// </summary>
         /// <param name="entity">The entity to show details.</param>

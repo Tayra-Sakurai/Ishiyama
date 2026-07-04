@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using Kara.Contexts;
 using Kara.Messages;
 using Kara.Models;
-using Kara.Services;
 using Kara.Validations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,14 +20,17 @@ namespace Kara.ViewModels
     {
         private Item item;
         private readonly IDbContextFactory<KaraContext> factory;
-        private readonly ILoggingService<Log> service;
 
-        public ItemViewModel(IDbContextFactory<KaraContext> dbContextFactory, ILoggingService<Log> service)
+        public ItemViewModel(IDbContextFactory<KaraContext> dbContextFactory)
         {
             factory = dbContextFactory;
-            this.service = service;
             Categories = [];
-            item = new();
+
+            using KaraContext context = factory.CreateDbContext();
+            item = new()
+            {
+                SmallCategoryId = context.SmallCategories.First().CategoryId,
+            };
         }
 
         public async Task LoadExistingDataAsync(Item entity)
@@ -37,7 +39,12 @@ namespace Kara.ViewModels
 
             Item? newItem = await context.Items.FindAsync(entity.Id);
             if (newItem != null)
+            {
                 item = newItem;
+                await context.Entry(item)
+                    .Reference(e => e.SmallCategory)
+                    .LoadAsync();
+            }
         }
 
         [ObservableProperty]
@@ -77,10 +84,16 @@ namespace Kara.ViewModels
             set => SetProperty(item.Life, value, item, (m, v) => m.Life = v, true);
         }
 
-        public Category Category
+        [Required]
+        public SmallCategory? SmallCategory
         {
-            get => item.Category;
-            set => SetProperty(item.CategoryId, value.Id, item, (m, v) => m.CategoryId = v);
+            get => item.SmallCategory;
+            set
+            {
+                ArgumentNullException.ThrowIfNull(value);
+
+                SetProperty(item.SmallCategoryId, value.CategoryId, item, (m, v) => m.SmallCategoryId = v, true);
+            }
         }
 
         [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanSave))]
@@ -120,13 +133,6 @@ namespace Kara.ViewModels
         [RelayCommand]
         public async Task RemoveAsync()
         {
-            Log log = new()
-            {
-                CategoryId = Category.Id,
-            };
-
-            await service.OutLogAsync(log);
-
             using KaraContext context = await factory.CreateDbContextAsync();
             context.Remove(item);
             await context.SaveChangesAsync();
