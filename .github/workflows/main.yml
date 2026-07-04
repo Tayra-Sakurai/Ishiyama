@@ -14,13 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
       - uses: microsoft/setup-msbuild@v3
-      - run: msbuild -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -p:SelfContained=true -p:TargetFramework=net10.0-windows10.0.26100.0 -r Ishiyama.slnx
-      - run: msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:SelfContained=true /p:TargetFramework=net10.0-windows10.0.26100.0 /p:GenerateAppxPackageOnBuild=true Ishiyama.slnx
+      - name: Build solution
+        run: msbuild /restore Ishiyama.slnx /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:SelfContained=true /p:TargetFramework=net10.0-windows10.0.26100.0
+      - name: Package solution
+        run: msbuild /restore Ishiyama.slnx /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /p:SelfContained=true /p:TargetFramework=net10.0-windows10.0.26100.0 /p:GenerateAppxPackageOnBuild=true
       - name: Upload the artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
-          path: packages?/**/*.*
+          path: Ishiyama\AppPackages\**\*.*
