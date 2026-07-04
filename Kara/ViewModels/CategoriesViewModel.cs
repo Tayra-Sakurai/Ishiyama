@@ -72,5 +72,20 @@ namespace Kara.ViewModels
         {
             WeakReferenceMessenger.Default.Send(new LargeCategoryAddingMessage(new()));
         }
+
+        [RelayCommand(CanExecute = nameof(IsSelectedLarge))]
+        private static void AddSmall(Category? category)
+        {
+            if (category is LargeCategory largeCategory)
+                WeakReferenceMessenger.Default.Send(new SmallCategoryAddingMessage(new()
+                {
+                    LargeCategoryId = largeCategory.CategoryId,
+                }));
+        }
+
+        private bool IsSelectedLarge(Category? category)
+        {
+            return category is LargeCategory;
+        }
     }
 }

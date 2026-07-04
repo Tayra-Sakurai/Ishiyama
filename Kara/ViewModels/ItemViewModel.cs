@@ -41,9 +41,14 @@ namespace Kara.ViewModels
             if (newItem != null)
             {
                 item = newItem;
-                await context.Entry(item)
+                await context.Attach(item)
                     .Reference(e => e.SmallCategory)
                     .LoadAsync();
+
+                Name = item.Name;
+                BoughtAt = item.BoughtAt;
+                Life = item.Life;
+                SmallCategory = item.SmallCategory;
             }
         }
 
