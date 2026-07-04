@@ -12,10 +12,10 @@ jobs:
         platform: [x64]
         configuration: [Release]
     steps:
-      - uses: actions/checkout@7.0.0
+      - uses: actions/checkout@v7.0.0
       - name: Setup .NET
-        uses: actions/setup-dotnet@5
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.x
-      - uses: microsoft/setup-msbuild@3
-      - run: msbuild Ishiyama.slnx 
+      - uses: microsoft/setup-msbuild@v3
+      - run: msbuild -p:Configuration=${{ matrix.configuration }};Platform=${{ matrix.platform }} Ishiyama.slnx
