@@ -17,10 +17,12 @@ namespace Ishiyama.TemplatedElements
 {
     [TemplateVisualState(GroupName = "ValidationStates", Name = "Invalid")]
     [TemplateVisualState(GroupName = "ValidationStates", Name = "Valid")]
+    [TemplatePart(Name = "ValidationTextBoxTextBox", Type = typeof(TextBox))]
     public sealed partial class ValidationTextBox : Control
     {
         // Global variables
         private INotifyDataErrorInfo? oldDataContext;
+        private TextBox? textBox;
 
         public ValidationTextBox()
         {
@@ -49,6 +51,14 @@ namespace Ishiyama.TemplatedElements
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+
+            textBox = (TextBox)GetTemplateChild("ValidationTextBoxTextBox");
+            textBox.TextChanged += TextBox_TextChanged;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Text = ((TextBox)sender).Text;
         }
 
         // The properties.
@@ -70,7 +80,7 @@ namespace Ishiyama.TemplatedElements
             set => SetValue(TextProperty, value);
         }
 
-        private static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+        public static DependencyProperty TextProperty { get; } = DependencyProperty.Register(
             nameof(Text),
             typeof(string),
             typeof(ValidationTextBox),

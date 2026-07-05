@@ -7,6 +7,5 @@ namespace Kara.Models
 {
     public class LargeCategory : Category
     {
-        public ObservableCollection<SmallCategory> SmallCategories { get; } = [];
     }
 }

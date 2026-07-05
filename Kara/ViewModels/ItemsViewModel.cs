@@ -49,15 +49,15 @@ namespace Kara.ViewModels
                 context
                 .Items
                 .Include(x => x.SmallCategory)
-                .ThenInclude(x => x!.LargeCategory)
+                .ThenInclude(x => x!.Parent)
                 .AsAsyncEnumerable())
                 Entities.Add(item);
 
             AddCommand.NotifyCanExecuteChanged();
         }
 
-        [RelayCommand(CanExecute = nameof(CanAdd))]
-        private async void Add()
+        [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanAdd))]
+        private async Task DoAddAsync()
         {
             using KaraContext context = await dbContextFactory.CreateDbContextAsync();
 
@@ -70,6 +70,8 @@ namespace Kara.ViewModels
             context.Add(newItem);
             await context.SaveChangesAsync();
         }
+
+        public IRelayCommand AddCommand => DoAddCommand;
 
         [RelayCommand(CanExecute = nameof(CanOpenDetail))]
         public void Detail(Item? item)

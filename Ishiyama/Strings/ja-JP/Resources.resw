@@ -117,7 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CategoryComboBox.Header" xml:space="preserve">
+    <value>親カテゴリ</value>
+  </data>
+  <data name="CategoryEditDesc.Text" xml:space="preserve">
+    <value>このページでは選択した分類項目の名称などを変更できます．</value>
+  </data>
+  <data name="CategoryNameBox.Header" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="CategoryNameBox.PlaceholderText" xml:space="preserve">
+    <value>一意な名称</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>あなたは現在データをデータベースから完全に消去しようとしています．このデータは削除されると復元することができなくなります．本当によろしいですか？</value>
+  </data>
+  <data name="DltBtn.Label" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="DltCBtn.Content" xml:space="preserve">
+    <value>本当に削除する</value>
+  </data>
   <data name="Greeting.Text" xml:space="preserve">
     <value>こんにちは</value>
+  </data>
+  <data name="SvBtn.Label" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="SyncBtn.Label" xml:space="preserve">
+    <value>同期</value>
   </data>
 </root>

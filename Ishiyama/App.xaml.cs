@@ -64,6 +64,7 @@ namespace Ishiyama
             services.AddTransient<ItemsViewModel>();
             services.AddTransient<ItemViewModel>();
             services.AddTransient<CategoriesViewModel>();
+            services.AddTransient<CategoryViewModel>();
 
             return services.BuildServiceProvider();
         }

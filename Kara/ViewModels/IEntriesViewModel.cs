@@ -23,14 +23,7 @@ namespace Kara.ViewModels
         IRelayCommand AddCommand { get; }
 
         /// <summary>
-        /// Removes the entry specified by <paramref name="entity"/>.
-        /// </summary>
-        /// <param name="entity">The entity to be removed</param>
-        /// <returns>The task manager of the asynchronous process.</returns>
-        Task RemoveAsync(TEntity? entity);
-
-        /// <summary>
-        /// Gets the instance of <see cref="IAsyncRelayCommand{TEntity}"/> of <see cref="RemoveAsync(TEntity)"/>.
+        /// Gets the instance of <see cref="IAsyncRelayCommand{TEntity}"/> to remove an entity.
         /// </summary>
         IAsyncRelayCommand<TEntity?> RemoveCommand { get; }
 

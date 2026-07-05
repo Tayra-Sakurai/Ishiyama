@@ -117,7 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CategoryComboBox.Header" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="CategoryEditDesc.Text" xml:space="preserve">
+    <value>You can edit the name and the parent category of the selected category.</value>
+  </data>
+  <data name="CategoryNameBox.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CategoryNameBox.PlaceholderText" xml:space="preserve">
+    <value>Unique name of the category.</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>You are deleting a data entry forever. You cannot recover the entry forever once you delete it. Are you sure to delete it?</value>
+  </data>
+  <data name="DltBtn.Label" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DltCBtn.Content" xml:space="preserve">
+    <value>OK. I confirm to remove.</value>
+  </data>
   <data name="Greeting.Text" xml:space="preserve">
     <value>Hello.</value>
+  </data>
+  <data name="SvBtn.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SyncBtn.Label" xml:space="preserve">
+    <value>Syncronize</value>
   </data>
 </root>

@@ -117,7 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CategoryComboBox.Header" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="CategoryEditDesc.Text" xml:space="preserve">
+    <value>You can edit the name and parent of the selected category.</value>
+  </data>
+  <data name="CategoryNameBox.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CategoryNameBox.PlaceholderText" xml:space="preserve">
+    <value>Unique name of the category.</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>You are removing a data entry for ever. Once you remove this data entry, you will be unable to recover the data for ever. Do you really want to remove this data?</value>
+  </data>
+  <data name="DltBtn.Label" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="DltCBtn.Content" xml:space="preserve">
+    <value>OK. I confirm to remove.</value>
+  </data>
   <data name="Greeting.Text" xml:space="preserve">
     <value>Hullo.</value>
+  </data>
+  <data name="SvBtn.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SyncBtn.Label" xml:space="preserve">
+    <value>Synchronise</value>
   </data>
 </root>

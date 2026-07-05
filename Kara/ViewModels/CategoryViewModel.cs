@@ -5,9 +5,9 @@ using Kara.Contexts;
 using Kara.Messages;
 using Kara.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,14 +23,48 @@ namespace Kara.ViewModels
         {
             this.factory = factory;
             category = new();
+            Categories = [];
+        }
+
+        [RelayCommand(AllowConcurrentExecutions = false)]
+        public async Task LoadAsync()
+        {
+            using KaraContext context = await factory.CreateDbContextAsync();
+
+            Categories.Clear();
+
+            await foreach (
+                Category category in
+                context.Categories
+                .AsAsyncEnumerable())
+                Categories.Add(category);
+
+            Categories.Insert(0, category.Parent);
         }
 
         [Required]
         public string Name
         {
             get => category.Name;
-            set => SetProperty(category.Name, value, category, (m, v) => m.Name = v, true);
+            set
+            {
+                SetProperty(category.Name, value, category, (m, v) => m.Name = v, true);
+                SaveCommand.NotifyCanExecuteChanged();
+            }
         }
+
+        public Category? Parent
+        {
+            get => category.Parent;
+            set
+            {
+                SetProperty(category.Parent, value, category, (m, v) => m.Parent = v);
+                SetProperty(category.ParentId, value?.CategoryId, category, (m, v) => m.ParentId = v);
+            }
+        }
+
+        [ObservableProperty]
+        public partial ObservableCollection<Category?> Categories { get; set; }
 
         [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanSave))]
         public async Task SaveAsync()
@@ -57,6 +91,9 @@ namespace Kara.ViewModels
             category = entity;
             Name = entity.Name;
             context.Update(category);
+
+            SaveCommand.NotifyCanExecuteChanged();
+
             await context.SaveChangesAsync();
         }
 

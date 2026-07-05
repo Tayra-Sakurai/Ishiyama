@@ -1,3 +1,6 @@
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Kara.Models;
+using Kara.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -19,20 +22,27 @@ using Windows.Foundation.Collections;
 namespace Ishiyama
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class CategoryViewPage : Page
     {
-        public MainWindow()
+        private CategoryViewModel? viewModel;
+
+        public CategoryViewPage()
         {
             InitializeComponent();
-            Activated += MainWindow_Activated;
         }
 
-        private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (SuperFrame.CurrentSourcePageType is null)
-                SuperFrame.Navigate(typeof(CategoryViewPage));
+            base.OnNavigatedTo(e);
+
+            viewModel = Ioc.Default.GetRequiredService<CategoryViewModel>();
+
+            await viewModel.LoadAsync();
+
+            if (e.Parameter is Category category)
+                await viewModel.LoadExistingDataAsync(category);
         }
     }
 }

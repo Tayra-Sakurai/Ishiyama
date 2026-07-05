@@ -34,58 +34,47 @@ namespace Kara.ViewModels
 
             Entities.Clear();
 
-            await foreach(
-                LargeCategory largeCategory
-                in context.LargeCategories
-                .Include(e => e.SmallCategories)
-                .OrderBy(e => e.CategoryId)
+            await foreach (
+                LargeCategory category in
+                context
+                .LargeCategories
+                .Include(e => e.Children)
+                .OrderBy(
+                    e => e.Name,
+                    StringComparer.CurrentCultureIgnoreCase)
                 .AsAsyncEnumerable())
-                Entities.Add(largeCategory);
-        }
-
-        [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanRemove))]
-        public async Task RemoveAsync(Category? category)
-        {
-            ArgumentNullException.ThrowIfNull(category);
-
-            using KaraContext context = await factory.CreateDbContextAsync();
-
-            context.Remove(category);
-            await context.SaveChangesAsync();
-        }
-
-        private bool CanRemove(Category? category)
-        {
-            return category is Category;
-        }
-
-        [RelayCommand(CanExecute = nameof(CanRemove))]
-        public void Detail(Category? category)
-        {
-            ArgumentNullException.ThrowIfNull(category);
-
-            WeakReferenceMessenger.Default.Send(new CategoryDetailMessage(category));
+                Entities.Add(category);
         }
 
         [RelayCommand]
-        private static void Add()
+        private void Add()
         {
             WeakReferenceMessenger.Default.Send(new LargeCategoryAddingMessage(new()));
         }
 
-        [RelayCommand(CanExecute = nameof(IsSelectedLarge))]
-        private static void AddSmall(Category? category)
+        [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanRemove))]
+        private async Task RemoveAsync(Category? category)
         {
-            if (category is LargeCategory largeCategory)
-                WeakReferenceMessenger.Default.Send(new SmallCategoryAddingMessage(new()
-                {
-                    LargeCategoryId = largeCategory.CategoryId,
-                }));
+            using KaraContext context = await factory.CreateDbContextAsync();
+
+            if (category is not null)
+            {
+                context.Remove(category);
+                await context.SaveChangesAsync();
+            }
         }
 
-        private bool IsSelectedLarge(Category? category)
+        [RelayCommand(CanExecute = nameof(CanRemove))]
+        public void Detail(Category? entity)
         {
-            return category is LargeCategory;
+            ArgumentNullException.ThrowIfNull(entity);
+
+            WeakReferenceMessenger.Default.Send(new CategoryDetailMessage(entity));
+        }
+
+        private bool CanRemove(Category? category)
+        {
+            return category is not null;
         }
     }
 }
