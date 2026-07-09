@@ -9,7 +9,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        platform: [x64]
+        platform: [x64, x86]
         configuration: [Release]
     steps:
       - uses: actions/checkout@v7.0.0
@@ -25,4 +25,5 @@ jobs:
       - name: Upload the artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: AppPackages
           path: Ishiyama\AppPackages\**\*.*
