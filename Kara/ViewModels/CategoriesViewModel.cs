@@ -52,6 +52,22 @@ namespace Kara.ViewModels
             WeakReferenceMessenger.Default.Send(new LargeCategoryAddingMessage(new()));
         }
 
+        [RelayCommand(CanExecute = nameof(CanAddSmall))]
+        private void AddSmall(Category? category)
+        {
+            ArgumentNullException.ThrowIfNull(category);
+
+            WeakReferenceMessenger.Default.Send(new SmallCategoryAddingMessage(new()
+            {
+                ParentId = category.CategoryId,
+            }));
+        }
+
+        private bool CanAddSmall(Category? category)
+        {
+            return category is not null && category is not SmallCategory;
+        }
+
         [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanRemove))]
         private async Task RemoveAsync(Category? category)
         {

@@ -27,7 +27,7 @@ namespace Kara.ViewModels
         }
 
         [RelayCommand(AllowConcurrentExecutions = false)]
-        public async Task LoadAsync()
+        public virtual async Task LoadAsync()
         {
             using KaraContext context = await factory.CreateDbContextAsync();
 
@@ -67,7 +67,7 @@ namespace Kara.ViewModels
         public partial ObservableCollection<Category?> Categories { get; set; }
 
         [RelayCommand(AllowConcurrentExecutions = false, CanExecute = nameof(CanSave))]
-        public async Task SaveAsync()
+        protected virtual async Task SaveAsync()
         {
             if (HasErrors)
                 return;
@@ -90,6 +90,7 @@ namespace Kara.ViewModels
 
             category = entity;
             Name = entity.Name;
+            Parent = entity.Parent;
             context.Update(category);
 
             SaveCommand.NotifyCanExecuteChanged();
@@ -98,7 +99,7 @@ namespace Kara.ViewModels
         }
 
         [RelayCommand(AllowConcurrentExecutions = false)]
-        public async Task RemoveAsync()
+        protected virtual async Task RemoveAsync()
         {
             using KaraContext context = await factory.CreateDbContextAsync();
 

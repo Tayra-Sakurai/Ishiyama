@@ -16,12 +16,6 @@ namespace Kara.ViewModels
         where TEntity : class, new()
     {
         /// <summary>
-        /// Saves to the database.
-        /// </summary>
-        /// <returns>The task to manage the process.</returns>
-        Task SaveAsync();
-
-        /// <summary>
         /// An <see cref="IAsyncRelayCommand"/> to have user to save the edition.
         /// </summary>
         IAsyncRelayCommand SaveCommand { get; }
@@ -32,12 +26,6 @@ namespace Kara.ViewModels
         /// <param name="entity">The existing entity.</param>
         /// <returns>The task process.</returns>
         Task LoadExistingDataAsync(TEntity entity);
-
-        /// <summary>
-        /// Removes the selected data and sends a message.
-        /// </summary>
-        /// <returns>The task process.</returns>
-        Task RemoveAsync();
 
         /// <summary>
         /// Gets the command to remove the entity.

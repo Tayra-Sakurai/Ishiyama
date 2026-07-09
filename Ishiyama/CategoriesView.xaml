@@ -13,7 +13,8 @@
 
     <Grid>
         <TreeView
-            ItemsSource="{Binding Entities}">
+            ItemsSource="{Binding Entities}"
+            SelectedItem="{x:Bind SelectedItem, Mode=TwoWay}">
             <TreeView.ItemTemplate>
                 <DataTemplate
                     x:DataType="models:Category">

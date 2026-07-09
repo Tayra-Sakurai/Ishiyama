@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Kara.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -18,23 +20,23 @@ using Windows.Foundation.Collections;
 
 namespace Ishiyama
 {
-    public sealed partial class CategoriesView : UserControl
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class CategoriesViewPage : Page
     {
-        public CategoriesView()
+        public CategoriesViewPage()
         {
             InitializeComponent();
         }
 
-        public object? SelectedItem
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            get => GetValue(SelectedItemProperty);
-            set => SetValue(SelectedItemProperty, value);
-        }
+            base.OnNavigatedTo(e);
 
-        private readonly static DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-            nameof(SelectedItem),
-            typeof(object),
-            typeof(CategoriesView),
-            new(null));
+            DataContext = Ioc.Default.GetRequiredService<CategoriesViewModel>();
+
+            await ((CategoriesViewModel)DataContext).LoadAsync();
+        }
     }
 }

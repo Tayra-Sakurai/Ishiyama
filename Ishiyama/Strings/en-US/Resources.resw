@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddBtn.Label" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddSmBtn.Label" xml:space="preserve">
+    <value>Add a new small category.</value>
+  </data>
+  <data name="BkBtn.Label" xml:space="preserve">
+    <value>Go back</value>
+  </data>
   <data name="CategoryComboBox.Header" xml:space="preserve">
     <value>Parent</value>
   </data>
@@ -132,6 +141,9 @@
   <data name="Confirm.Text" xml:space="preserve">
     <value>You are deleting a data entry forever. You cannot recover the entry forever once you delete it. Are you sure to delete it?</value>
   </data>
+  <data name="DetailBtn.Label" xml:space="preserve">
+    <value>View details</value>
+  </data>
   <data name="DltBtn.Label" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -140,6 +152,9 @@
   </data>
   <data name="Greeting.Text" xml:space="preserve">
     <value>Hello.</value>
+  </data>
+  <data name="LdBtn.Label" xml:space="preserve">
+    <value>Load data.</value>
   </data>
   <data name="SvBtn.Label" xml:space="preserve">
     <value>Save</value>

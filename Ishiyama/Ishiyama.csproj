@@ -15,7 +15,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="CategoriesView.xaml" />
+    <None Remove="CategoriesViewPage.xaml" />
     <None Remove="CategoryViewPage.xaml" />
+    <None Remove="LargeCategoryViewPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kara\Kara.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="LargeCategoryViewPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="CategoriesViewPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="CategoriesView.xaml">
