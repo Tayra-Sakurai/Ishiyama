@@ -16,6 +16,7 @@ namespace Kara.Contexts
         public DbSet<Item> Items { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<ActionType> Actions { get; set; }
+        public DbSet<Location> Locations { get; set; }
 
         public KaraContext(DbContextOptions<KaraContext> options)
             : base(options) { }
@@ -34,6 +35,10 @@ namespace Kara.Contexts
                 .IsUnique();
             modelBuilder.Entity<LargeCategory>();
             modelBuilder.Entity<SmallCategory>();
+            modelBuilder
+                .Entity<Location>()
+                .HasIndex(e => e.Name)
+                .IsUnique();
         }
     }
 }

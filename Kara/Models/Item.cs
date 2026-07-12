@@ -14,5 +14,7 @@ namespace Kara.Models
         public SmallCategory? SmallCategory { get; set; }
         public DateTimeOffset BoughtAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset Life { get; set; } = DateTimeOffset.Now;
+        public int LocationId { get; set; }
+        public Location? Location { get; set; }
     }
 }

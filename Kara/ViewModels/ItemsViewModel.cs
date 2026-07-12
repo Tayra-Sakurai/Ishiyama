@@ -62,9 +62,11 @@ namespace Kara.ViewModels
             using KaraContext context = await dbContextFactory.CreateDbContextAsync();
 
             Category defaultCategory = context.SmallCategories.First();
+            Location defaultLocation = context.Locations.First();
             Item newItem = new()
             {
                 SmallCategoryId = defaultCategory.CategoryId,
+                LocationId = defaultLocation.Id,
             };
 
             context.Add(newItem);
@@ -96,12 +98,12 @@ namespace Kara.ViewModels
 
         private bool CanRemove(Item? item)
         {
-            return item is Item;
+            return item is not null;
         }
 
         private bool CanOpenDetail(Item? item)
         {
-            return item is Item;
+            return item is not null;
         }
 
         private bool CanAdd()

@@ -6,6 +6,7 @@ using Kara.Messages;
 using Kara.Models;
 using Kara.Validations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,11 +26,13 @@ namespace Kara.ViewModels
         {
             factory = dbContextFactory;
             Categories = [];
+            Locations = [];
 
             using KaraContext context = factory.CreateDbContext();
             item = new()
             {
                 SmallCategoryId = context.SmallCategories.First().CategoryId,
+                LocationId = context.Locations.First().Id,
             };
         }
 
@@ -41,7 +44,11 @@ namespace Kara.ViewModels
             if (newItem != null)
             {
                 item = newItem;
-                await context.Attach(item)
+                EntityEntry<Item> itemEntry = context.Attach(item);
+                await itemEntry
+                    .Reference(e => e.Location)
+                    .LoadAsync();
+                await itemEntry
                     .Reference(e => e.SmallCategory)
                     .LoadAsync();
 
@@ -54,6 +61,13 @@ namespace Kara.ViewModels
 
         [ObservableProperty]
         public partial ObservableCollection<Category> Categories
+        {
+            get;
+            set;
+        }
+
+        [ObservableProperty]
+        public partial ObservableCollection<Location> Locations
         {
             get;
             set;
@@ -123,11 +137,17 @@ namespace Kara.ViewModels
             using KaraContext context = await factory.CreateDbContextAsync();
 
             Categories.Clear();
+            Locations.Clear();
 
             await foreach (
                 Category category in
                 context.Categories.AsAsyncEnumerable())
                 Categories.Add(category);
+
+            await foreach (
+                Location location in
+                context.Locations.AsAsyncEnumerable())
+                Locations.Add(location);
         }
 
         private bool CanSave()
